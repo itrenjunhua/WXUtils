@@ -205,6 +205,7 @@ function requestNetWork(url, method, header, params, message, successFunction, f
         header: resultHeader,
         success: function (res) {
             console.log("【start】----- Request NetWork Success -----【start】")
+            console.log("URL => "+getApp().ApiServices.BASE_HTTP + url)
             console.log(res.data)
             console.log("【end】------- Request NetWork Success -------【end】")
 
@@ -218,6 +219,7 @@ function requestNetWork(url, method, header, params, message, successFunction, f
         },
         fail: function (res) {
             console.log("【start】----- Request NetWork Fail -----【start】")
+            console.log("URL => "+getApp().ApiServices.BASE_HTTP + url)
             console.log(res)
             console.log("【end】------- Request NetWork Fail -------【end】")
 
