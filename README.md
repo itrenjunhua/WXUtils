@@ -90,4 +90,6 @@
 	  getDaysOfMonth1: getDaysOfMonth1,
 	  // 获取给定时间戳的月份的日期数组 返回 result[] 包含这个月中的每一天日期，只有日期 1,2,3...
 	  getDaysOfMonth2: getDaysOfMonth2,
+	  // 将时间值 秒 转化为 几小时 几分钟的形式
+	  formatTimeValue: formatTimeValue,
 	}
