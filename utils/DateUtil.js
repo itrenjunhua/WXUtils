@@ -247,6 +247,37 @@ function getDaysOfMonth2(longTime) {
   return result
 }
 
+/**
+ * 将时间值 秒 转化为 几小时 几分钟的形式
+ */
+function formatTimeValue(ss) {
+  var SS_MILLS_COUNT = 1000; // 毫秒
+  var MI_MILLS_COUNT = SS_MILLS_COUNT * 60; // 分钟
+  var HH_MILLS_COUNT = MI_MILLS_COUNT * 60; // 小时
+  var DD_MILLS_COUNT = HH_MILLS_COUNT * 24; // 天
+
+  ss = ss * SS_MILLS_COUNT; // 将秒变为毫秒
+  var duration = "";
+  var minutes = Math.floor(ss / MI_MILLS_COUNT); // 分钟
+  var hours = Math.floor(ss / HH_MILLS_COUNT); // 小时
+  var days = Math.floor(ss / DD_MILLS_COUNT); // 天
+
+  if (days > 0) {
+    var tHours = hours - days * 24;
+    var tMinutes = minutes - tHours * 60 - days * 24 * 60;
+    duration = days + "天" + tHours + "小时" + tMinutes + "分钟";
+  } else if (hours > 0) {
+    var tMinutes = minutes - hours * 60;
+    duration = hours + "小时" + tMinutes + "分钟";
+  } else if (minutes > 0) {
+    duration = minutes + "分钟";
+  } else {
+    duration = "不到1分钟";
+  }
+
+  return duration;
+}
+
 module.exports = {
   // Date 格式化成 2018-07-11 15:23:08 格式
   formatTime: formatTime,
@@ -276,4 +307,6 @@ module.exports = {
   getDaysOfMonth1: getDaysOfMonth1,
   // 获取给定时间戳的月份的日期数组 返回 result[] 包含这个月中的每一天日期，只有日期 1,2,3...
   getDaysOfMonth2: getDaysOfMonth2,
+  // 将时间值 秒 转化为 几小时 几分钟的形式
+  formatTimeValue: formatTimeValue,
 }
