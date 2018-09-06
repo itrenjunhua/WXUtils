@@ -93,3 +93,12 @@
 	  // 将时间值 秒 转化为 几小时 几分钟的形式
 	  formatTimeValue: formatTimeValue,
 	}
+
+## 4.StringUtil.js 文件
+	module.exports = {
+	  // 用于判断空，Undefined String Array Object
+	  isEmpty: isEmpty,
+	  // 处理空字符串
+	  handlerString: handlerString,
+	}
+
