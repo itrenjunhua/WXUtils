@@ -13,6 +13,14 @@ function formatTime(date) {
 }
 
 /**
+ * 获取指定时间的毫秒值 年、月、日、时、分、秒
+ */
+function getMillisecondValue(year, month, day, hour, minute, second) {
+  var date = new Date(year, month - 1, day, hour, minute, second)
+  return date.getTime()
+}
+
+/**
  * 时间戳 格式化成 2018-07-11 格式
  */
 function formatDate(longTime) {
@@ -309,4 +317,6 @@ module.exports = {
   getDaysOfMonth2: getDaysOfMonth2,
   // 将时间值 秒 转化为 几小时 几分钟的形式
   formatTimeValue: formatTimeValue,
+  //  获取指定时间的毫秒值 年、月、日、时、分、秒
+  getMillisecondValue: getMillisecondValue,
 }
