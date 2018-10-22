@@ -92,13 +92,39 @@
 	  getDaysOfMonth2: getDaysOfMonth2,
 	  // 将时间值 秒 转化为 几小时 几分钟的形式
 	  formatTimeValue: formatTimeValue,
+	  //  获取指定时间的毫秒值 年、月、日、时、分、秒
+	  getMillisecondValue: getMillisecondValue,
 	}
 
 ## 4.StringUtil.js 文件
+
 	module.exports = {
 	  // 用于判断空，Undefined String Array Object
 	  isEmpty: isEmpty,
 	  // 处理空字符串
 	  handlerString: handlerString,
 	}
+
+## 5.CheckUtil.js 文件
+
+	module.exports = {
+	  // 校验手机号
+	  validateMobilePhone: validateMobilePhone,
+	  // 根据身份证获取年龄、性别等数据 {'age': age,'sex':0,'year': year,'month': month,'day': day} 
+	  // sex : 0 表示女 1 表示男
+	  getIdCardInfo: getIdCardInfo
+	}
+
+## 6.ViewUtil.js 文件
+
+	module.exports = {
+	  repeatBtn: repeatBtn, // 重复点击事件处理
+	}
+> 使用
+> 
+	  functionName(函数名): viewUtil.repeatBtn(function() {
+	    // ... 
+	  }, 1000),
+
+
 
