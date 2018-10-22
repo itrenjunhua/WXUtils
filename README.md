@@ -126,5 +126,57 @@
 	    // ... 
 	  }, 1000),
 
+# 小程序组件
+## components\dialog
+> 使用
 
+1. page.json 文件中配置
+	
+		{
+		  "usingComponents": {
+		    "dialog": "/components/dialog/dialog"
+		  }
+		}
 
+2. page.wxml 文件中使用
+
+		<dialog id="dialog" bind:cancelEvent="cancelEvent" bind:okEvent="okEvent"></dialog>
+
+3. page.js 文件中设置内容和调用相关方法
+
+		// 显示dialog
+		showDialog:function(){
+			// 找到组件 设置数据
+			var dialog = this.selectComponent('#dialog')
+		    dialog.setData({
+		      title: '弹框标题',
+		      content: '弹框显示的具体内容',
+		      cancelText: '取消',
+		      okText: '确认'
+		    })
+		    dialog.show()
+		},
+
+		// 弹框取消事件
+	    cancelEvent: function() {
+		  // 事件处理 ...
+
+		  // 关闭弹框
+	      var dialog = this.selectComponent('#dialog')
+	      dialog.close();
+	    },
+
+	    // 弹框确认事件
+	    okEvent: function() {
+		  // 事件处理 ...
+		  
+		  // 关闭弹框
+	      var dialog = this.selectComponent('#dialog')
+	      dialog.close();
+	    },
+
+		// 可以在页面生命周期的 onReady() 方法中获取，而不是每次使用的时候获取
+		// onReady: function () {
+		//	// 获得 dialog 组件
+		//	this.dialog = this.selectComponent("#dialog");
+		// },
