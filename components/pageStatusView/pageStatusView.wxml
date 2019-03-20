@@ -1,0 +1,28 @@
+<!-- 页面状态View -->
+
+<view class='view-status-page'>
+  
+  <!-- 0：加载中 -->
+  <view class='status-view' style='margin-top:{{marginTop}}rpx;' wx:if="{{pageStatusValue == 0}}">
+    <image mode='center' class='status-view-image' src='{{loadingImage}}'></image>
+    <view class='status-view-text'>{{loadingText}}</view>
+  </view>
+
+  <!-- 2：空页面 -->
+  <view class='status-view' style='margin-top:{{marginTop}}rpx;' wx:if="{{pageStatusValue == 2}}">
+    <image class='status-view-image' src='{{emptyImage}}'></image>
+    <view class='status-view-text'>{{emptyText}}</view>
+  </view>
+
+  <!-- 3：网络错误 -->
+  <view class='status-view' style='margin-top:{{marginTop}}rpx;' wx:if="{{pageStatusValue == 3}}">
+    <image class='status-view-image' src='{{netWorkImage}}'></image>
+    <view class='status-view-text'>{{netWorkText}}</view>
+  </view>
+
+  <!-- 4：加载异常/错误 -->
+  <view class='status-view' style='margin-top:{{marginTop}}rpx;' wx:if="{{pageStatusValue == 4}}">
+    <image class='status-view-image' src='{{errorImage}}'></image>
+    <view class='status-view-text'>{{errorText}}</view>
+  </view>
+</view>

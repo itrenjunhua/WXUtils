@@ -1,0 +1,20 @@
+/* 页面状态View */
+
+/*****************************************/
+/**** 状态页面样式 ****/
+.view-status-page{
+  width: 100%;
+}
+.status-view{
+  width: 100%;
+  text-align: center;
+}
+.status-view-image{
+  width: 400rpx;
+  height: 180rpx;
+}
+.status-view-text{
+  font-size: 30rpx;
+  color: #666;
+  margin-top: 30rpx;
+}
