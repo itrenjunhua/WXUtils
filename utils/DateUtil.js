@@ -13,6 +13,20 @@ function formatTime(date) {
 }
 
 /**
+ * Date 格式化成 2018-07-11 15:23:08 类似格式 但是 - 和 : 为指定的字符
+ */
+function formatTimeJoin(date, dateJoin, timeJoin) {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  const second = date.getSeconds()
+
+  return [year, month, day].map(formatNumber).join(dateJoin) + ' ' + [hour, minute, second].map(formatNumber).join(timeJoin)
+}
+
+/**
  * 获取指定时间的毫秒值 年、月、日、时、分、秒
  */
 function getMillisecondValue(year, month, day, hour, minute, second) {
@@ -32,10 +46,28 @@ function formatDate(longTime) {
 }
 
 /**
+ * 时间戳 格式化成 2018-07-11 类似格式 但是 - 为指定的字符
+ */
+function formatDateJoin(longTime, dateJoin) {
+  var date = new Date(longTime)
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  return [year, month, day].map(formatNumber).join(dateJoin)
+}
+
+/**
  * 时间戳 格式化成 2018-07-11 15:23:08 格式
  */
 function formatDateAndTime(longTime) {
   return formatTime(new Date(longTime))
+}
+
+/**
+ * 时间戳 格式化成 2018-07-11 15:23:08 类似格式 但是 - 和 : 为指定的字符
+ */
+function formatDateAndTimeJoin(longTime, dateJoin, timeJoin) {
+  return formatTimeJoin(new Date(longTime), dateJoin, timeJoin)
 }
 
 /**
@@ -207,6 +239,18 @@ function getFutureDate1(longTime, count) {
 }
 
 /**
+ * 获取从某一时间开始未来 count 天的时间日期 年-月-日 2018-02-08  其中分隔符 - 为 参数3指定的符号
+ */
+function getFutureDate1Join(longTime, count, dateJoin) {
+  var result = []
+  for (var i = 0; i < count; i++) {
+    var temp = dateChange(longTime, 0, 0, i)
+    result[i] = temp[0] + dateJoin + temp[1] + dateJoin + temp[2]
+  }
+  return result
+}
+
+/**
  * 获取从某一时间开始未来 count 天的时间日期 日 8
  */
 function getFutureDate2(longTime, count) {
@@ -240,6 +284,25 @@ function getDaysOfMonth1(longTime) {
 }
 
 /**
+ * 获取给定时间戳的月份的日期数组 返回 result[] 包含这个月中的每一天日期，包含年和月 2018-01-02,... 其中分隔符 - 为 参数2指定的符号
+ */
+function getDaysOfMonth1Join(longTime, dateJoin) {
+  var result = []
+  var temp = monthStartAndEnd(longTime, 0)
+
+  var newLongTime = new Date(temp[0], temp[1] - 1, temp[2]).getTime()
+
+  var dayCount = temp[3] - temp[2] + 1 // 当前月一共的天数
+
+  for (var i = 0; i < dayCount; i++) {
+    var temp = dateChange(newLongTime, 0, 0, i)
+    result[i] = temp[0] + dateJoin + temp[1] + dateJoin + temp[2]
+  }
+
+  return result
+}
+
+/**
  * 获取给定时间戳的月份的日期数组 返回 result[] 包含这个月中的每一天日期，只有日期 1,2,3...
  */
 function getDaysOfMonth2(longTime) {
@@ -256,20 +319,19 @@ function getDaysOfMonth2(longTime) {
 }
 
 /**
- * 将时间值 秒 转化为 几小时 几分钟的形式
+ * 将时间值 秒 转化为 几小时 几分钟的形式  参数1：毫秒值 参数2：默认值
  */
-function formatTimeValue(ss) {
+function formatTimeValue(ss, defaultValue) {
   var SS_MILLS_COUNT = 1000; // 毫秒
   var MI_MILLS_COUNT = SS_MILLS_COUNT * 60; // 分钟
   var HH_MILLS_COUNT = MI_MILLS_COUNT * 60; // 小时
   var DD_MILLS_COUNT = HH_MILLS_COUNT * 24; // 天
 
   ss = ss * SS_MILLS_COUNT; // 将秒变为毫秒
-  var duration = "";
+  var duration = defaultValue;
   var minutes = Math.floor(ss / MI_MILLS_COUNT); // 分钟
   var hours = Math.floor(ss / HH_MILLS_COUNT); // 小时
   var days = Math.floor(ss / DD_MILLS_COUNT); // 天
-
   if (days > 0) {
     var tHours = hours - days * 24;
     var tMinutes = minutes - tHours * 60 - days * 24 * 60;
@@ -280,19 +342,32 @@ function formatTimeValue(ss) {
   } else if (minutes > 0) {
     duration = minutes + "分钟";
   } else {
-    duration = "不到1分钟";
+    duration = defaultValue;
   }
 
   return duration;
 }
 
+/**
+ * 小时变换  参数1：小时数 参数2：变换值
+ */
+function hourChange(hour, count) {
+  return timeChange(getMillisecondValue(2019, 1, 1, hour, 0, 0), count, 0, 0)[0]
+}
+
 module.exports = {
   // Date 格式化成 2018-07-11 15:23:08 格式
   formatTime: formatTime,
+  // Date 格式化成 2018-07-11 15:23:08 类似格式 但是 - 和 : 为指定的字符
+  formatTimeJoin: formatTimeJoin,
   // 时间戳 格式化成 2018-07-11 格式
   formatDate: formatDate,
+  // 时间戳 格式化成 2018-07-11 类似格式 但是 - 为指定的字符
+  formatDateJoin: formatDateJoin,
   // 时间戳 格式化成 2018-07-11 15:23:08 格式
   formatDateAndTime: formatDateAndTime,
+  // 时间戳 格式化成 2018-07-11 15:23:08 类似格式 但是 - 和 : 为指定的字符
+  formatDateAndTimeJoin: formatDateAndTimeJoin,
   // 在传递的时间戳基础上对 年、月、日、时、分、秒 进行 增加或减少操作，返回变换后的年月日时分秒
   dateTimeChange: dateTimeChange,
   // 在传递的时间戳基础上对 年、月、日 进行 增加或减少操作，返回变换后的年月日
@@ -309,14 +384,20 @@ module.exports = {
   getDateFormLong: getDateFormLong,
   // 获取从某一时间开始未来 count 天的时间日期 年-月-日 2018-02-08
   getFutureDate1: getFutureDate1,
-  // 获取从某一时间开始未来 count 天的时间日期 年-月-日 2-8
+  // 获取从某一时间开始未来 count 天的时间日期 年-月-日 2018-02-08  其中分隔符 - 为 参数2指定的符号
+  getFutureDate1Join: getFutureDate1Join,
+  // 获取从某一时间开始未来 count 天的时间日期 日 8
   getFutureDate2: getFutureDate2,
-  // 获取给定时间戳的月份的日期数组 返回 result[] 包含这个月中的每一天日期，包含年和月 2018- 01 - 02, ...
+  // 获取给定时间戳的月份的日期数组 返回 result[] 包含这个月中的每一天日期，包含年和月 2018-01-02, ...
   getDaysOfMonth1: getDaysOfMonth1,
+  // 获取给定时间戳的月份的日期数组 返回 result[] 包含这个月中的每一天日期，包含年和月 2018-01-02,... 其中分隔符 - 为 参数2指定的符号
+  getDaysOfMonth1Join: getDaysOfMonth1Join,
   // 获取给定时间戳的月份的日期数组 返回 result[] 包含这个月中的每一天日期，只有日期 1,2,3...
   getDaysOfMonth2: getDaysOfMonth2,
-  // 将时间值 秒 转化为 几小时 几分钟的形式
+  // 将时间值 秒 转化为 几小时 几分钟的形式  参数1：毫秒值 参数2：默认值
   formatTimeValue: formatTimeValue,
   //  获取指定时间的毫秒值 年、月、日、时、分、秒
   getMillisecondValue: getMillisecondValue,
+  // 小时变换  参数1：小时数 参数2：变换值
+  hourChange: hourChange,
 }
