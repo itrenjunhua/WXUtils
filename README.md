@@ -119,8 +119,10 @@
 	  handlerString: handlerString,
 	  // 处理多个空字符串，并安顺序连接
 	  handlerStrings: handlerStrings,
-	  // 替换字符串
+	  // 替换字符串(只替换第一个出现的位置)
 	  replace: replace,
+	  // 替换字符串(全部替换)
+	  replaceAll: replaceAll,
 	}
 
 ## 5.CheckUtil.js 文件
