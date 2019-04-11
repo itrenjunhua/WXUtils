@@ -64,13 +64,24 @@ function handlerStrings() {
 }
 
 /**
- * 替换字符串
+ * 替换字符串(只替换第一个出现的位置)
  */
 function replace(oldStr, oldChar, newChar) {
   if (oldStr == null || isEmpty(oldStr))
     return ""
 
   return oldStr.replace(oldChar, newChar)
+}
+
+/**
+ * 替换字符串(全部替换)
+ */
+function replaceAll(oldStr, oldChar, newChar) {
+  if (oldStr == null || isEmpty(oldStr))
+    return ""
+
+  var reg = new RegExp(oldChar, "g")
+  return oldStr.replace(reg, newChar)
 }
 
 module.exports = {
@@ -82,6 +93,8 @@ module.exports = {
   handlerString: handlerString,
   // 处理多个空字符串，并安顺序连接
   handlerStrings: handlerStrings,
-  // 替换字符串
+  // 替换字符串(只替换第一个出现的位置)
   replace: replace,
+  // 替换字符串(全部替换)
+  replaceAll: replaceAll,
 }
