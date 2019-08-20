@@ -1,5 +1,6 @@
 // 网路请求封装类
 var uiUtil = require('/UIUtil.js')
+const language = require('../language/LanguageUtil.js')
 
 /**************** POST 请求  ******************/
 
@@ -176,27 +177,22 @@ function requestNetWork(url, method, header, params, message, successFunction, f
     })
   }
 
-  console.log("=============  NetWork Request Start  =============")
-
-  console.log("【start】----- Request -----【start】")
-
-  console.log("---------- Request Url ----------")
-  console.log(getApp().ApiServices.BASE_HTTP + url)
+  console.log("【start】=============  NetWork Request Start  =============【start】")
+  console.log("Request Url: " + getApp().ApiServices.BASE_HTTP + url)
 
   var puslicHeader = {
     'content-type': 'application/json', // 默认值
-    "session_id": getApp().globalData.sessionId
+    // 根据管理员sessionId判断是否为管理员操作
+    "session_id": getApp().globalData.adminSessionId == null ? getApp().globalData.sessionId : getApp().globalData.adminSessionId
   }
 
   var resultHeader = connectJson(puslicHeader, header)
 
-  console.log("---------- Request Header ----------")
+  console.log("【--- Request Header ---】")
   console.log(resultHeader)
-
-  console.log("---------- Request Params ----------")
+  console.log("【--- Request Params ---】")
   console.log(params)
 
-  console.log("【end】------- Request -------【end】")
 
   wx.request({
     url: getApp().ApiServices.BASE_HTTP + url,
@@ -205,18 +201,20 @@ function requestNetWork(url, method, header, params, message, successFunction, f
     data: params == null ? {} : params,
     header: resultHeader,
     success: function(res) {
-      console.log("【start】----- Request NetWork Success -----【start】")
-      console.log("URL => " + getApp().ApiServices.BASE_HTTP + url)
+      console.log("【 Request NetWork Success: " + getApp().ApiServices.BASE_HTTP + url + "】")
       console.log(res.data)
-      console.log("【end】------- Request NetWork Success -------【end】")
 
-      wx.hideLoading()
+      if (message != null && message.length > 0) {
+        wx.hideLoading()
+      }
+      
       if (res.statusCode == 200) {
         if (res.data.status == 200) {
           successFunction(res.data.data)
         } else if (res.data.status == 503) {
           // 更新 sessionId 并重新获取数据
-          localLoginAndRequest(url, method, header, params, message, successFunction, failFunction)
+          // localLoginAndRequest(url, method, header, params, message, successFunction, failFunction)
+          uiUtil.showToast(language.getLanguage().taostSessionIdException)
         } else {
           if (res.data.message != null) {
             uiUtil.showToast(res.data.message)
@@ -228,16 +226,14 @@ function requestNetWork(url, method, header, params, message, successFunction, f
 
     },
     fail: function(res) {
-      console.log("【start】----- Request NetWork Fail -----【start】")
-      console.log("URL => " + getApp().ApiServices.BASE_HTTP + url)
+      console.log("【 Request NetWork Fail: " + getApp().ApiServices.BASE_HTTP + url + "】")
       console.log(res)
-      console.log("【end】------- Request NetWork Fail -------【end】")
 
       wx.hideLoading()
       failFunction(res)
     },
     complete: function(res) {
-      console.log("=============  NetWork Request End  =============")
+      console.log("【end】=============  NetWork Request End  =============【end】")
     },
   })
 }
@@ -257,25 +253,27 @@ function connectJson(jsonbject1, jsonbject2) {
 }
 
 // 本地登录获取自定义 sessionId
-function localLogin(successFunction) {
+function localLogin(successFunction, failFunction) {
   wx.login({
     success: function(res) {
       // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      postRequestLoadingBase(getApp().ApiServices.localLogin + "?code=" + res.code, '加载中...',
+      postRequestLoadingBase(getApp().ApiServices.wxLogin + "?code=" + res.code + "&boxsId=" + getApp().globalData.boxsId,
+        language.getLanguage().dialogLoading,
         function(data) {
           getApp().globalData.sessionId = data.sessionId
-          getApp().globalData.registed = data.registed
-          getApp().globalData.userPhone = data.phone
+          if (getApp().globalData.model == 3) {
+            getApp().globalData.bindInfo = data
+          }
           getApp().globalData.count = 0
           successFunction(data)
         },
         function(data) {
           getApp().globalData.count = getApp().globalData.count + 1
           if (getApp().globalData.count > 5) {
-            getApp().globalData.loginStatus = -1
+            failFunction(data)
             return
           } else {
-            localLogin(successFunction)
+            localLogin(successFunction, failFunction)
           }
         })
     }
@@ -286,6 +284,7 @@ function localLogin(successFunction) {
 function localLoginAndRequest(url, method, header, params, message, successFunction, failFunction) {
   getApp().globalData.count = getApp().globalData.count + 1
   if (getApp().globalData.count > 5) {
+    uiUtil.showToast(language.getLanguage().taostSessionIdException)
     return
   }
 
@@ -295,8 +294,9 @@ function localLoginAndRequest(url, method, header, params, message, successFunct
       postRequestBase(getApp().ApiServices.localLogin + "?code=" + res.code, function(data) {
         console.log(data)
         getApp().globalData.sessionId = data.sessionId
-        getApp().globalData.regiested = data.regiested
-        getApp().globalData.userPhone = data.phone
+        if (getApp().globalData.model == 3) {
+          getApp().globalData.bindInfo = data
+        }
         getApp().globalData.count = 0
         // 重新获取数据
         requestNetWork(url, method, header, params, message, successFunction, failFunction)

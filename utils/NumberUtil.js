@@ -23,8 +23,22 @@ function returnMoney(value, defaultValue) {
   }
 }
 
+function integerOf(value, defaultValue) {
+  if (stringUtil.isEmpty(value + "")) return defaultValue
+
+  return parseInt(value)
+}
+
+function floatOf(value, defaultValue) {
+  if (stringUtil.isEmpty(value + "")) return defaultValue
+
+  return parseFloat(value)
+}
+
 
 module.exports = {
   // 金额处理，保留2位小数
   returnMoney: returnMoney,
+  integerOf: integerOf,
+  floatOf: floatOf,
 }

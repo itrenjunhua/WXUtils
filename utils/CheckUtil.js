@@ -1,5 +1,5 @@
 // 检查相关工具类
-
+var language = require('../language/LanguageUtil.js')
 var uiUtil = require('/UIUtil.js')
 /**
  * 验证手机号
@@ -7,16 +7,18 @@ var uiUtil = require('/UIUtil.js')
  */
 function validateMobilePhone(mobilePhone) {
   if (mobilePhone == null || mobilePhone.length == 0) {
-    uiUtil.showToast("请输入手机号！")
+    uiUtil.showToast(language.getLanguage().tostEmptyPhone)
     return false;
   }
   if (mobilePhone.length != 11) {
-    uiUtil.showToast("手机号长度有误！")
+    uiUtil.showToast(language.getLanguage().toastPhoneLength)
+    // uiUtil.showToast("手机号长度有误！")
     return false;
   }
   var myreg = /^[1][3-9][0-9]\d{8}$/;
   if (!myreg.test(mobilePhone)) {
-    uiUtil.showToast("手机号有误！")
+    uiUtil.showToast(language.getLanguage().toastPhoneError)
+    // uiUtil.showToast("手机号有误！")
     return false;
   }
   return true;
