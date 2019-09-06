@@ -265,3 +265,26 @@
 	      value: '加载失败了..'
 	    },
 	  },  
+
+## treeView 组件
+小程序实现树形结构数据组件。
+
+	properties: {
+	    model: {
+	      type: Object,
+	      value: {}
+	    },
+	    selectedItem: {
+	      type: Object,
+	      value: {}
+	    },
+	  },
+	
+	  methods: {
+	    // 更新数据
+	    refreshData: function() {},
+	}
+
+效果图：
+
+![树形组件](https://raw.githubusercontent.com/itrenjunhua/MyHightLight/master/showImages/treeView.jpg)
