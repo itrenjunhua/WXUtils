@@ -8,10 +8,6 @@ Component({
       type: String,
       value: '弹框标题'
     },
-    image: {
-      type: String,
-      value: '../../images/open_success.png'
-    },
     content: {
       type: String,
       value: '内容'

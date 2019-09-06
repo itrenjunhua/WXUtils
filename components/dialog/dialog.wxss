@@ -79,3 +79,9 @@
   color: #4ec282;
   background: #fff;
 }
+
+button::after{display:none}
+
+.hover-class{
+  background-color: #eee !important;
+}

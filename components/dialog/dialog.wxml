@@ -6,9 +6,9 @@
     <text class='dialog-content'>{{content}}</text>
     <view class='dialog-line'></view>
     <view class="dialog-bt-p">
-      <button class="dialog-bt-cancel" bindtap='_cancelEvent'>{{cancelText}}</button>
+      <button class="dialog-bt-cancel" hover-class="hover-class" bindtap='_cancelEvent'>{{cancelText}}</button>
       <view class='dialog-bt-line '></view>
-      <button class="dialog-bt-confirm" bindtap='_okEvent'>{{okText}}</button>
+      <button class="dialog-bt-confirm" hover-class="hover-class" bindtap='_okEvent'>{{okText}}</button>
     </view>
   </view>
 </view>

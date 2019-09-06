@@ -1,0 +1,11 @@
+/* components/treeView.wxss */
+
+.tree-view {
+  width: 100%;
+  height: auto;
+}
+
+.tree-view-text {
+  font-size: 28rpx;
+  color: #222;
+}
